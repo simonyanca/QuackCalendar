@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\QuackCalendar.Model\QuackCalendar.Model.csproj" />
+  </ItemGroup>
+
 </Project>

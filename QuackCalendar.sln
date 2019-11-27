@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuackCalendar.WebApp", "Qua
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuackCalendar.Service", "QuackCalendar.Service\QuackCalendar.Service.csproj", "{058EE73E-1BF0-4D1E-BE50-60417CE0EA66}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6F7F5D8B-1C63-4F8F-9524-1D3346E32068}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptanceTests", "AcceptanceTests\AcceptanceTests.csproj", "{EC5836A8-DAF9-4B54-8CE9-186382AC7098}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +31,16 @@ Global
 		{058EE73E-1BF0-4D1E-BE50-60417CE0EA66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{058EE73E-1BF0-4D1E-BE50-60417CE0EA66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{058EE73E-1BF0-4D1E-BE50-60417CE0EA66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC5836A8-DAF9-4B54-8CE9-186382AC7098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC5836A8-DAF9-4B54-8CE9-186382AC7098}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC5836A8-DAF9-4B54-8CE9-186382AC7098}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC5836A8-DAF9-4B54-8CE9-186382AC7098}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EC5836A8-DAF9-4B54-8CE9-186382AC7098} = {6F7F5D8B-1C63-4F8F-9524-1D3346E32068}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FE046CB5-2383-40F1-AF86-5AFD92ACADAD}
