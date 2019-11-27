@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuackCalendar.Services", "QuackCalendar.Services\QuackCalendar.Services.csproj", "{6C2AAEBD-EFE7-47E2-A062-1F272DA5483D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuackCalendar.Models", "QuackCalendar.Models\QuackCalendar.Models.csproj", "{5FACCF71-BF66-4228-8EC5-1075DBAD044A}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C2AAEBD-EFE7-47E2-A062-1F272DA5483D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C2AAEBD-EFE7-47E2-A062-1F272DA5483D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C2AAEBD-EFE7-47E2-A062-1F272DA5483D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C2AAEBD-EFE7-47E2-A062-1F272DA5483D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FACCF71-BF66-4228-8EC5-1075DBAD044A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FACCF71-BF66-4228-8EC5-1075DBAD044A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FACCF71-BF66-4228-8EC5-1075DBAD044A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FACCF71-BF66-4228-8EC5-1075DBAD044A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
