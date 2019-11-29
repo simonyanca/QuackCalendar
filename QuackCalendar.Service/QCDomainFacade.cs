@@ -1,4 +1,5 @@
-﻿using QuackCalendar.Model;
+﻿using System.Threading.Tasks;
+using QuackCalendar.Model;
 using QuackCalendar.Service.Manager;
 using QuackCalendar.Service.ServiceLocator;
 
@@ -21,10 +22,10 @@ namespace QuackCalendar.Service
             this.serviceLocator = serviceLocator;
         }
 
-        public QCAddEventResponse AddEvent(QCAddEventRequest qcAddEventRequest)
-            => QCServiceManager.AddEvent(qcAddEventRequest);
+        public async Task<QCAddEventResponse> AddEventAsync(QCAddEventRequest qcAddEventRequest)
+            => await QCServiceManager.AddEventAsync(qcAddEventRequest);
 
-        public QCGetEventsResponse GetEvents(QCGetEventsRequest qcGetEventsRequest)
-            => QCServiceManager.GetEvents(qcGetEventsRequest);
+        public async Task<QCGetEventsResponse> GetEventsAsync(QCGetEventsRequest qcGetEventsRequest)
+            => await QCServiceManager.GetEventsAsync(qcGetEventsRequest);
     }
 }

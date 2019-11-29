@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Data;
+using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using QuackCalendar.Model;
+using QuackCalendar.Model.Constant;
 using QuackCalendar.Service.Exception;
 
 namespace QuackCalendar.Service.Manager.Gateway
 {
     internal sealed class MySqlGateway : SqlGatewayBase
     {
-        protected override QCAddEventResponse AddEventCore(QCAddEventRequest qcAddEventRequest)
+        protected override async Task<QCAddEventResponse> AddEventCoreAsync(QCAddEventRequest qcAddEventRequest)
         {
             // INSERT INTO `quackcalendar`.`events` (`userid`, `startdatetime`, `enddatetime`, `name`, `description`)
             // VALUES ('1', '2019-1-1', '2019-1-2', 'nyname', 'nydesc');
@@ -20,12 +22,18 @@ namespace QuackCalendar.Service.Manager.Gateway
                 $"'{qcAddEventRequest.Event.Name}', " +
                 $"'{qcAddEventRequest.Event.Description}');";
 
-            ExecuteCommand(query, 1);
+            await ExecuteCommandAsync(query, 1);
 
-            return new QCAddEventResponse();
+            var response = new QCAddEventResponse
+            {
+                StatusCode = QCStatusCodes.SuccessfulStatusCode,
+                StatusMessage = QCStatusMessages.SuccessfulStatusMessage
+            };
+
+            return response;
         }
 
-        protected override QCGetEventsResponse GetEventsCore(QCGetEventsRequest qcGetEventsRequest)
+        protected override async Task<QCGetEventsResponse> GetEventsCoreAsync(QCGetEventsRequest qcGetEventsRequest)
         {
             var query = $"SELECT edb.name, edb.description, edb.startdatetime, edb.enddatetime " +
                 $"FROM quackcalendar.events AS edb " +
@@ -34,7 +42,7 @@ namespace QuackCalendar.Service.Manager.Gateway
                 $"AND edb.enddatetime <= '{qcGetEventsRequest.EndDate.ToString("yyyy-MM-dd HH:mm:ss")}';";
             
 
-            var dataSetQuery = ExecuteQuery(query, 4);
+            var dataSetQuery = await ExecuteQueryAsync(query, 4);
             var response = new QCGetEventsResponse();
 
             foreach (DataRow row in dataSetQuery.Tables[0].Rows)
@@ -48,10 +56,13 @@ namespace QuackCalendar.Service.Manager.Gateway
                 });
             }
 
+            response.StatusCode = QCStatusCodes.SuccessfulStatusCode;
+            response.StatusMessage = QCStatusMessages.SuccessfulStatusMessage;
+
             return response;
         }
 
-        private void ExecuteCommand(string query, int expectedRowsAffected)
+        private async Task ExecuteCommandAsync(string query, int expectedRowsAffected)
         {
             try
             {
@@ -59,9 +70,9 @@ namespace QuackCalendar.Service.Manager.Gateway
                 {
                     using (var command = new MySqlCommand(query, connection))
                     {
-                        command.Connection.Open();
-                        var rowsAffected = command.ExecuteNonQuery();
-                        command.Connection.Close();
+                        await command.Connection.OpenAsync();
+                        var rowsAffected = await command.ExecuteNonQueryAsync();
+                        await command.Connection.CloseAsync();
                         ValidateCommandResults(rowsAffected, expectedRowsAffected);
                     }
                 }
@@ -76,7 +87,7 @@ namespace QuackCalendar.Service.Manager.Gateway
             }
         }
 
-        private DataSet ExecuteQuery(string query, params int[] expectedColumnsPerTable)
+        private async Task<DataSet> ExecuteQueryAsync(string query, params int[] expectedColumnsPerTable)
         {
             try
             {
@@ -85,7 +96,7 @@ namespace QuackCalendar.Service.Manager.Gateway
                     using (var dataAdapter = new MySqlDataAdapter(query, connection))
                     {
                         var dataSet = new DataSet();
-                        dataAdapter.Fill(dataSet);
+                        await dataAdapter.FillAsync(dataSet);
                         ValidateQueryResults(dataSet, expectedColumnsPerTable);
 
                         return dataSet;

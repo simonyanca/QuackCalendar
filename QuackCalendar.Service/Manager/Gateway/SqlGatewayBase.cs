@@ -1,16 +1,17 @@
-﻿using QuackCalendar.Model;
+﻿using System.Threading.Tasks;
+using QuackCalendar.Model;
 
 namespace QuackCalendar.Service.Manager.Gateway
 {
     internal abstract class SqlGatewayBase
     {
-        internal QCAddEventResponse AddEvent(QCAddEventRequest qcAddEventRequest)
-            => AddEventCore(qcAddEventRequest);
+        internal async Task<QCAddEventResponse> AddEventAsync(QCAddEventRequest qcAddEventRequest)
+            => await AddEventCoreAsync(qcAddEventRequest);
 
-        internal QCGetEventsResponse GetEvents(QCGetEventsRequest qcGetEventsRequest)
-            => GetEventsCore(qcGetEventsRequest);
+        internal async Task<QCGetEventsResponse> GetEventsAsync(QCGetEventsRequest qcGetEventsRequest)
+            => await GetEventsCoreAsync(qcGetEventsRequest);
 
-        protected abstract QCAddEventResponse AddEventCore(QCAddEventRequest qcAddEventRequest);
-        protected abstract QCGetEventsResponse GetEventsCore(QCGetEventsRequest qcGetEventsRequest);
+        protected abstract Task<QCAddEventResponse> AddEventCoreAsync(QCAddEventRequest qcAddEventRequest);
+        protected abstract Task<QCGetEventsResponse> GetEventsCoreAsync(QCGetEventsRequest qcGetEventsRequest);
     }
 }

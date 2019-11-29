@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuackCalendar.Model", "Quac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuackCalendar.WebApp", "QuackCalendar.WebApp\QuackCalendar.WebApp.csproj", "{DB41AE4B-03BE-4E89-94C9-AC900A8250E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuackCalendar.Service", "QuackCalendar.Service\QuackCalendar.Service.csproj", "{058EE73E-1BF0-4D1E-BE50-60417CE0EA66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuackCalendar.Service", "QuackCalendar.Service\QuackCalendar.Service.csproj", "{058EE73E-1BF0-4D1E-BE50-60417CE0EA66}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6F7F5D8B-1C63-4F8F-9524-1D3346E32068}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptanceTests", "AcceptanceTests\AcceptanceTests.csproj", "{EC5836A8-DAF9-4B54-8CE9-186382AC7098}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptanceTests", "AcceptanceTests\AcceptanceTests.csproj", "{EC5836A8-DAF9-4B54-8CE9-186382AC7098}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
