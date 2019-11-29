@@ -21,6 +21,9 @@ namespace QuackCalendar.Service
             this.serviceLocator = serviceLocator;
         }
 
+        public QCAddEventResponse AddEvent(QCAddEventRequest qcAddEventRequest)
+            => QCServiceManager.AddEvent(qcAddEventRequest);
+
         public QCGetEventsResponse GetEvents(QCGetEventsRequest qcGetEventsRequest)
             => QCServiceManager.GetEvents(qcGetEventsRequest);
     }

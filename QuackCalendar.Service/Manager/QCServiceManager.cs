@@ -17,6 +17,9 @@ namespace QuackCalendar.Service.Manager
             this.serviceLocator = serviceLocator;
         }
 
+        internal QCAddEventResponse AddEvent(QCAddEventRequest qcAddEventRequest)
+            => SqlGateway.AddEvent(qcAddEventRequest);
+
         internal QCGetEventsResponse GetEvents(QCGetEventsRequest qcGetEventsRequest)
             => SqlGateway.GetEvents(qcGetEventsRequest);
     }
