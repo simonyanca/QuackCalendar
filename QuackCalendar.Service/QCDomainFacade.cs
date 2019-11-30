@@ -5,7 +5,7 @@ using QuackCalendar.Service.ServiceLocator;
 
 namespace QuackCalendar.Service
 {
-    public sealed class QCDomainFacade
+    public sealed class QCDomainFacade : IQCDomainFacade
     {
         private readonly ServiceLocatorBase serviceLocator;
         private QCServiceManager qcServiceManager;
