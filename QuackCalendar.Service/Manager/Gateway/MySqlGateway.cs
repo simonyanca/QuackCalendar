@@ -35,14 +35,14 @@ namespace QuackCalendar.Service.Manager.Gateway
 
         protected override async Task<QCGetEventsResponse> GetEventsCoreAsync(QCGetEventsRequest qcGetEventsRequest)
         {
-            var query = $"SELECT edb.name, edb.description, edb.startdatetime, edb.enddatetime " +
+            var query = $"SELECT edb.name, edb.description, edb.startdatetime, edb.enddatetime, edb.eventid " +
                 $"FROM quackcalendar.events AS edb " +
                 $"WHERE edb.userid = {qcGetEventsRequest.UserId} " +
                 $"AND edb.startdatetime >= '{qcGetEventsRequest.StartDate.ToString("yyyy-MM-dd HH:mm:ss")}'" +
                 $"AND edb.enddatetime <= '{qcGetEventsRequest.EndDate.ToString("yyyy-MM-dd HH:mm:ss")}';";
             
 
-            var dataSetQuery = await ExecuteQueryAsync(query, 4);
+            var dataSetQuery = await ExecuteQueryAsync(query, 5);
             var response = new QCGetEventsResponse();
 
             foreach (DataRow row in dataSetQuery.Tables[0].Rows)
@@ -51,6 +51,7 @@ namespace QuackCalendar.Service.Manager.Gateway
                 {
                     Description = (string)row.ItemArray[1],
                     EndDateTime = (DateTime)row.ItemArray[3],
+                    Id = (int)row.ItemArray[4],
                     Name = (string)row.ItemArray[0],
                     StartDateTime = (DateTime)row.ItemArray[2]
                 });

@@ -33,17 +33,16 @@
                         @Model.DaysOfTheMonth[x, y]
                     </div>
 
-                    @if (Model.DaysOfTheMonth[x, y] == 15)
+                    @if (Model.EventsPerDayOfTheMonth[Model.DaysOfTheMonth[x, y] - 1].Count > 0)
                     {
-                        <button type="button" class="btn btn-primary">2pm Help me Mario I have to type a long descriptiont to see what it does.</button><br />
-                        <br />
-                        <br />
+                        @foreach (var e in Model.EventsPerDayOfTheMonth[Model.DaysOfTheMonth[x, y] - 1])
+                        {
+                            <a class="btn btn-outline-primary" asp-page="./ViewEvent" asp-route-eventId="@e.Id">@e.StartDateTime.ToString("HHtt") @e.Name.Substring(0, 8)...</a><br />
+                        }
                     }
                     else
                     {
-                        <br />
-                        <br />
-                        <br />
+                        <br /><br /><br />
                     }
                 }
             </td>
