@@ -1,0 +1,53 @@
+﻿@page "{selectedYear:int?}/{selectedMonth:int?}"
+@model QuackCalendar.WebApp.Pages.QC.ViewMonthModel
+@{
+}
+
+<div class="breadcrumb">
+    <span class="breadcrumb-item">Quack Calendar</span>
+    <span class="breadcrumb-item">View Month</span>
+    <span class="breadcrumb-item">@Model.SelectedMonthWord @Model.SelectedYear</span>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <td style="width: 14.3%">Sunday</td>
+            <td style="width: 14.3%">Monday</td>
+            <td style="width: 14.3%">Tuesday</td>
+            <td style="width: 14.3%">Wednesday</td>
+            <td style="width: 14.3%">Thursday</td>
+            <td style="width: 14.3%">Friday</td>
+            <td style="width: 14.3%">Saturday</td>
+        </tr>
+    </thead>
+    @for (int y = 0; y < 6; y++)
+    {
+        <tr>
+            @for (int x = 0; x < 7; x++)
+            {
+            <td class="table-bordered" style="vertical-align: text-top; text-align: left">
+                @if (Model.DaysOfTheMonth[x, y] > 0)
+                {
+                    <div class="nav navbar-light">
+                        @Model.DaysOfTheMonth[x, y]
+                    </div>
+
+                    @if (Model.DaysOfTheMonth[x, y] == 15)
+                    {
+                        <button type="button" class="btn btn-primary">2pm Help me Mario I have to type a long descriptiont to see what it does.</button><br />
+                        <br />
+                        <br />
+                    }
+                    else
+                    {
+                        <br />
+                        <br />
+                        <br />
+                    }
+                }
+            </td>
+            }
+        </tr>
+    }
+</table>

@@ -15,10 +15,4 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <ProjectReference Include="..\QuackCalendar.Model\QuackCalendar.Model.csproj" />
-    <ProjectReference Include="..\QuackCalendar.Service\QuackCalendar.Service.csproj" />
-  </ItemGroup>
-
 </Project>
