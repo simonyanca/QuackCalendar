@@ -9,6 +9,11 @@
     <span class="breadcrumb-item">@Model.SelectedMonthWord @Model.SelectedYear</span>
 </div>
 
+@if (Model.Message != null)
+{
+    <div class="alert alert-info">@Model.Message</div>
+}
+
 <table class="table table-hover">
     <thead>
         <tr>
@@ -26,27 +31,27 @@
         <tr>
             @for (int x = 0; x < 7; x++)
             {
-            <td class="table-bordered" style="vertical-align: text-top; text-align: left">
-                @if (Model.DaysOfTheMonth[x, y] > 0)
-                {
-                    <div class="nav navbar-light">
-                        <span style="text-align: left; width: 50%">@Model.DaysOfTheMonth[x, y]</span>
-                        <span style="text-align: right; width: 50%"><a class="badge badge-light" asp-page="./EditEvent">+</a></span>
-                    </div>
-
-                    @if (Model.EventsPerDayOfTheMonth[Model.DaysOfTheMonth[x, y] - 1].Count > 0)
+                <td class="table-bordered" style="vertical-align: text-top; text-align: left">
+                    @if (Model.DaysOfTheMonth[x, y] > 0)
                     {
-                        @foreach (var e in Model.EventsPerDayOfTheMonth[Model.DaysOfTheMonth[x, y] - 1])
+                        <div class="nav navbar-light">
+                            <span style="text-align: left; width: 50%">@Model.DaysOfTheMonth[x, y]</span>
+                            <span style="text-align: right; width: 50%"><a class="badge badge-light" asp-page="./EditEvent" asp-route-eventId="0" asp-route-selectedYear="@Model.SelectedYear" asp-route-selectedMonth="@Model.SelectedMonth" asp-route-selectedDay="@Model.DaysOfTheMonth[x, y]">+</a></span>
+                        </div>
+
+                        @if (Model.EventsPerDayOfTheMonth[Model.DaysOfTheMonth[x, y] - 1].Count > 0)
                         {
-                            <a class="btn btn-outline-primary" asp-page="./ViewEvent" asp-route-eventId="@e.Id">@e.StartDateTime.ToString("hhtt") @e.Name.Substring(0, (e.Name.Length >= 12) ? 12 : e.Name.Length)...</a><br />
+                            @foreach (var e in Model.EventsPerDayOfTheMonth[Model.DaysOfTheMonth[x, y] - 1])
+                            {
+                                <a class="btn btn-outline-primary" asp-page="./ViewEvent" asp-route-eventId="@e.Id">@e.StartDateTime.ToString("hhtt") @e.Name.Substring(0, (e.Name.Length >= 12) ? 12 : e.Name.Length)...</a><br />
+                            }
+                        }
+                        else
+                        {
+                            <br /><br />
                         }
                     }
-                    else
-                    {
-                        <br /><br />
-                    }
-                }
-            </td>
+                </td>
             }
         </tr>
     }

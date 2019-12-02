@@ -20,11 +20,19 @@ namespace QuackCalendar.WebApp.Pages.QC
             this.domainFacade = domainFacade;
         }
 
-        public async Task<IActionResult> OnGet(int eventId)
+        public async Task<IActionResult> OnGet(int eventId, bool? deleteEvent)
         {
             var request = new QCGetEventRequest { EventId = eventId };
             var response = await domainFacade.GetEventAsync(request);
             SelectedEvent = response.Event;
+
+            if (deleteEvent.HasValue && deleteEvent.Value == true)
+            {
+                var deleteRequest = new QCDeleteEventRequest { EventId = eventId };
+                await domainFacade.DeleteEventAsync(deleteRequest);
+                TempData["Message"] = $"Event \"{SelectedEvent.Name}\" was deleted.";
+                return RedirectToPage("./ViewMonth", new { selectedYear = SelectedEvent.StartDateTime.Year, selectedMonth = SelectedEvent.StartDateTime.Month });
+            }
 
             return Page();
         }

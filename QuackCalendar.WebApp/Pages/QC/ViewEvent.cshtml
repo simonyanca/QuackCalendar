@@ -1,4 +1,4 @@
-﻿@page "{eventId:int}"
+﻿@page "{eventId:int}/{deleteEvent:bool?}"
 @model QuackCalendar.WebApp.Pages.QC.ViewEventModel
 @{
     ViewData["Title"] = "ViewEvent";
@@ -24,5 +24,6 @@
 
 <div>
     <a class="btn btn-primary" asp-page="./EditEvent" asp-route-eventId="@Model.SelectedEvent.Id">Edit Event</a>
+    <a class="btn btn-warning" asp-page="./ViewEvent" asp-route-eventId="@Model.SelectedEvent.Id" asp-route-deleteEvent="true">Delete Event</a>
     <a class="btn btn-primary" asp-page="./ViewMonth" asp-route-selectedYear="@Model.SelectedEvent.StartDateTime.Year" asp-route-selectedMonth="@Model.SelectedEvent.StartDateTime.Month">Back to month</a>
 </div>

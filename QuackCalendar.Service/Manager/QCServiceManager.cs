@@ -21,6 +21,9 @@ namespace QuackCalendar.Service.Manager
         internal async Task<QCAddEventResponse> AddEventAsync(QCAddEventRequest qcAddEventRequest)
             => await SqlGateway.AddEventAsync(qcAddEventRequest);
 
+        internal async Task<QCDeleteEventResponse> DeleteEventAsync(QCDeleteEventRequest qcDeleteEventRequest)
+            => await SqlGateway.DeleteEventAsync(qcDeleteEventRequest);
+
         internal async Task<QCGetEventResponse> GetEventAsync(QCGetEventRequest qcGetEventRequest)
             => await SqlGateway.GetEventAsync(qcGetEventRequest);
 

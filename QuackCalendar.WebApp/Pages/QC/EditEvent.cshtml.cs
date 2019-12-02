@@ -21,16 +21,26 @@ namespace QuackCalendar.WebApp.Pages.QC
             this.domainFacade = domainFacade;
         }
 
-        public async Task<IActionResult> OnGet(int? eventId)
+        public async Task<IActionResult> OnGet(int? eventId, int? selectedYear, int? selectedMonth, int? selectedDay)
         {
-            if (eventId.HasValue)
+            if (eventId.HasValue && eventId.Value > 0)
             {
                 var request = new QCGetEventRequest { EventId = eventId.Value };
                 var response = await domainFacade.GetEventAsync(request);
                 SelectedEvent = response.Event;
             }
+            else
+            {
+                var eventDate = new DateTime(
+                (selectedYear.HasValue) ? selectedYear.Value : DateTime.Today.Year,
+                (selectedMonth.HasValue) ? selectedMonth.Value : DateTime.Today.Month,
+                (selectedDay.HasValue) ? selectedDay.Value : DateTime.Today.Day,
+                12, 0, 0);
+                SelectedEvent.StartDateTime = eventDate;
+                SelectedEvent.EndDateTime = eventDate;
+            }
 
-            if (eventId.HasValue && string.IsNullOrEmpty(SelectedEvent.Name))
+            if (eventId.HasValue && eventId.Value > 0 && string.IsNullOrEmpty(SelectedEvent.Name))
             {
                 return RedirectToPage("./NotFound");
             }

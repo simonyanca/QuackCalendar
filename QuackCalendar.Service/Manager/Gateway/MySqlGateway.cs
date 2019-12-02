@@ -12,30 +12,61 @@ namespace QuackCalendar.Service.Manager.Gateway
     {
         protected override async Task<QCAddEventResponse> AddEventCoreAsync(QCAddEventRequest qcAddEventRequest)
         {
-            // INSERT INTO `quackcalendar`.`events` (`userid`, `startdatetime`, `enddatetime`, `name`, `description`)
-            // VALUES ('1', '2019-1-1', '2019-1-2', 'nyname', 'nydesc');
-
+            //var query = $"INSERT INTO quackcalendar.events (`userid`, `startdatetime`, `enddatetime`, `name`, `description`) VALUES (" +
+            //    $"'{qcAddEventRequest.UserId}', " +
+            //    $"'{qcAddEventRequest.Event.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
+            //    $"'{qcAddEventRequest.Event.EndDateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
+            //    $"'{qcAddEventRequest.Event.Name}', " +
+            //    $"'{qcAddEventRequest.Event.Description}');";
             var query = $"INSERT INTO quackcalendar.events (`userid`, `startdatetime`, `enddatetime`, `name`, `description`) VALUES (" +
                 $"'{qcAddEventRequest.UserId}', " +
                 $"'{qcAddEventRequest.Event.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
                 $"'{qcAddEventRequest.Event.EndDateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
-                $"'{qcAddEventRequest.Event.Name}', " +
-                $"'{qcAddEventRequest.Event.Description}');";
+                $"@param1, " +
+                $"@param2);";
 
-            await ExecuteCommandAsync(query, 1);
+            await ExecuteCommandAsync(
+                query,
+                1,
+                qcAddEventRequest.Event.Name,
+                qcAddEventRequest.Event.Description);
 
+            //query = $"SELECT edb.eventid FROM quackcalendar.events AS edb " +
+            //    $"WHERE edb.userid = '{qcAddEventRequest.UserId}' AND " +
+            //    $"edb.name = '{qcAddEventRequest.Event.Name}' AND " +
+            //    $"edb.description = '{qcAddEventRequest.Event.Description}' AND " +
+            //    $"edb.startdatetime = '{qcAddEventRequest.Event.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")}';";
             query = $"SELECT edb.eventid FROM quackcalendar.events AS edb " +
                 $"WHERE edb.userid = '{qcAddEventRequest.UserId}' AND " +
-                $"edb.name = '{qcAddEventRequest.Event.Name}' AND " +
-                $"edb.description = '{qcAddEventRequest.Event.Description}' AND " +
+                $"edb.name=@param1 AND " +
+                $"edb.description=@param2 AND " +
                 $"edb.startdatetime = '{qcAddEventRequest.Event.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")}';";
 
-            var dataSetQuery = await ExecuteQueryAsync(query, 1);
+            var dataSetQuery = await ExecuteQueryAsync(
+                query,
+                1,
+                qcAddEventRequest.Event.Name,
+                qcAddEventRequest.Event.Description);
             var eventId = (int)dataSetQuery.Tables[0].Rows[0].ItemArray[0];
 
             var response = new QCAddEventResponse
             {
                 Event = new QCEvent { Id = eventId },
+                StatusCode = QCStatusCodes.SuccessfulStatusCode,
+                StatusMessage = QCStatusMessages.SuccessfulStatusMessage
+            };
+
+            return response;
+        }
+
+        protected override async Task<QCDeleteEventResponse> DeleteEventCoreAsync(QCDeleteEventRequest qcDeleteEventRequest)
+        {
+            var query = $"DELETE FROM quackcalendar.events WHERE quackcalendar.events.eventid = {qcDeleteEventRequest.EventId};";
+
+            await ExecuteCommandAsync(query, 1);
+
+            var response = new QCDeleteEventResponse
+            {
                 StatusCode = QCStatusCodes.SuccessfulStatusCode,
                 StatusMessage = QCStatusMessages.SuccessfulStatusMessage
             };
@@ -98,14 +129,24 @@ namespace QuackCalendar.Service.Manager.Gateway
         {
             var qce = qcUpdateEventRequest.Event;
 
+            //var query = $"UPDATE quackcalendar.events SET " +
+            //    $"quackcalendar.events.startdatetime = '{qce.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
+            //    $"quackcalendar.events.enddatetime = '{qce.EndDateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
+            //    $"quackcalendar.events.name = '{qce.Name}', " +
+            //    $"quackcalendar.events.description = '{qce.Description}' " +
+            //    $"WHERE quackcalendar.events.eventid = {qce.Id};";
             var query = $"UPDATE quackcalendar.events SET " +
                 $"quackcalendar.events.startdatetime = '{qce.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
                 $"quackcalendar.events.enddatetime = '{qce.EndDateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
-                $"quackcalendar.events.name = '{qce.Name}', " +
-                $"quackcalendar.events.description = '{qce.Description}' " +
+                $"quackcalendar.events.name=@param1, " +
+                $"quackcalendar.events.description=@param2 " +
                 $"WHERE quackcalendar.events.eventid = {qce.Id};";
 
-            await ExecuteCommandAsync(query, 1);
+            await ExecuteCommandAsync(
+                query,
+                1,
+                qce.Name,
+                qce.Description);
 
             var response = new QCUpdateEventResponse
             {
@@ -117,7 +158,7 @@ namespace QuackCalendar.Service.Manager.Gateway
             return response;
         }
 
-        private async Task ExecuteCommandAsync(string query, int expectedRowsAffected)
+        private async Task ExecuteCommandAsync(string query, int expectedRowsAffected, params string[] queryParameters)
         {
             try
             {
@@ -125,6 +166,12 @@ namespace QuackCalendar.Service.Manager.Gateway
                 {
                     using (var command = new MySqlCommand(query, connection))
                     {
+                        for (int i = 0; i < queryParameters.Length; i++)
+                        {
+                            var tokenString = $"@param{i + 1}";
+                            command.Parameters.AddWithValue(tokenString, queryParameters[i]);
+                        }
+
                         await command.Connection.OpenAsync();
                         var rowsAffected = await command.ExecuteNonQueryAsync();
                         await command.Connection.CloseAsync();
@@ -142,7 +189,7 @@ namespace QuackCalendar.Service.Manager.Gateway
             }
         }
 
-        private async Task<DataSet> ExecuteQueryAsync(string query, params int[] expectedColumnsPerTable)
+        private async Task<DataSet> ExecuteQueryAsync(string query, int expectedColumnsPerTable, params string[] queryParameters)
         {
             try
             {
@@ -150,6 +197,12 @@ namespace QuackCalendar.Service.Manager.Gateway
                 {
                     using (var dataAdapter = new MySqlDataAdapter(query, connection))
                     {
+                        for (int i = 0; i < queryParameters.Length; i++)
+                        {
+                            var tokenString = $"@param{i + 1}";
+                            dataAdapter.SelectCommand.Parameters.AddWithValue(tokenString, queryParameters[i]);
+                        }
+
                         var dataSet = new DataSet();
                         await dataAdapter.FillAsync(dataSet);
                         ValidateQueryResults(dataSet, expectedColumnsPerTable);
@@ -181,25 +234,11 @@ namespace QuackCalendar.Service.Manager.Gateway
             }
         }
 
-        private void ValidateQueryResults(DataSet dataSet, params int[] expectedColumnsPerTable)
+        private void ValidateQueryResults(DataSet dataSet, int expectedColumnsPerTable)
         {
-            var actualTableCount = dataSet.Tables.Count;
-            var expectedTableCount = expectedColumnsPerTable.Length;            
-
-            if (actualTableCount != expectedTableCount)
+            if (dataSet.Tables[0].Columns.Count != expectedColumnsPerTable)
             {
-                throw new QCServiceSqlException($"The SQL query returned {actualTableCount} table(s) but expected {expectedTableCount} table(s) to be returned.");
-            }
-
-            for (int table = 0; table < actualTableCount; table++)
-            {
-                var actualColumns = dataSet.Tables[table].Columns.Count;
-                var expectedColumns = expectedColumnsPerTable[table];
-
-                if (actualColumns != expectedColumns)
-                {
-                    throw new QCServiceSqlException($"The SQL query returned {actualColumns} columns for a table expected to return {expectedColumns} columns.");
-                }
+                throw new QCServiceSqlException($"The SQL query returned {dataSet.Tables[0].Columns.Count} columns(s) but expected {expectedColumnsPerTable} columns(s) to be returned.");
             }
         }
     }

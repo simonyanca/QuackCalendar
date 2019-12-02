@@ -13,6 +13,10 @@ namespace QuackCalendar.WebApp.Pages.QC
     {
         public List<QCEvent>[] EventsPerDayOfTheMonth { get; set; } = new List<QCEvent>[31];
         public int[,] DaysOfTheMonth { get; set; } = new int[7, 6];
+
+        [TempData]
+        public string Message { get; set; }
+
         public int SelectedMonth { get; set; }
         public string SelectedMonthWord => new DateTime(2000, SelectedMonth, 1).ToString("MMMM");
         public int SelectedYear { get; set; }

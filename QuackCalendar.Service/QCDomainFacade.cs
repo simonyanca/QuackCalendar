@@ -33,5 +33,8 @@ namespace QuackCalendar.Service
 
         public async Task<QCUpdateEventResponse> UpdateEventAsync(QCUpdateEventRequest qcUpdateEventRequest)
             => await QCServiceManager.UpdateEventAsync(qcUpdateEventRequest);
+
+        public async Task<QCDeleteEventResponse> DeleteEventAsync(QCDeleteEventRequest qcDeleteEventRequest)
+            => await QCServiceManager.DeleteEventAsync(qcDeleteEventRequest);
     }
 }
