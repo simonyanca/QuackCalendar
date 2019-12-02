@@ -7,6 +7,10 @@ namespace QuackCalendar.Service
     {
         Task<QCAddEventResponse> AddEventAsync(QCAddEventRequest qcAddEventRequest);
 
+        Task<QCGetEventResponse> GetEventAsync(QCGetEventRequest qcGetEventRequest);
+
         Task<QCGetEventsResponse> GetEventsAsync(QCGetEventsRequest qcGetEventsRequest);
+
+        Task<QCUpdateEventResponse> UpdateEventAsync(QCUpdateEventRequest qcUpdateEventRequest);
     }
 }

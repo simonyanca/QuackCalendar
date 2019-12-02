@@ -4,9 +4,25 @@
     ViewData["Title"] = "ViewEvent";
 }
 
-<h1>Quack Calendar / View Event</h1>
-
 <div class="breadcrumb">
     <span class="breadcrumb-item">Quack Calendar</span>
     <span class="breadcrumb-item">View Event</span>
+</div>
+
+<div>
+    Name: @Model.SelectedEvent.Name
+</div>
+<div>
+    Description: @Model.SelectedEvent.Description
+</div>
+<div>
+    Starts: @Model.SelectedEvent.StartDateTime.ToString("hh:mmtt yyyy/MM/dd")
+</div>
+<div>
+    Ends: @Model.SelectedEvent.EndDateTime.ToString("hh:mmtt yyyy/MM/dd")
+</div>
+
+<div>
+    <a class="btn btn-primary" asp-page="./EditEvent" asp-route-eventId="@Model.SelectedEvent.Id">Edit Event</a>
+    <a class="btn btn-primary" asp-page="./ViewMonth" asp-route-selectedYear="@Model.SelectedEvent.StartDateTime.Year" asp-route-selectedMonth="@Model.SelectedEvent.StartDateTime.Month">Back to month</a>
 </div>

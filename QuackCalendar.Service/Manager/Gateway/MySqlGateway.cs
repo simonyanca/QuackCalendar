@@ -24,11 +24,42 @@ namespace QuackCalendar.Service.Manager.Gateway
 
             await ExecuteCommandAsync(query, 1);
 
+            query = $"SELECT edb.eventid FROM quackcalendar.events AS edb " +
+                $"WHERE edb.userid = '{qcAddEventRequest.UserId}' AND " +
+                $"edb.name = '{qcAddEventRequest.Event.Name}' AND " +
+                $"edb.description = '{qcAddEventRequest.Event.Description}' AND " +
+                $"edb.startdatetime = '{qcAddEventRequest.Event.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")}';";
+
+            var dataSetQuery = await ExecuteQueryAsync(query, 1);
+            var eventId = (int)dataSetQuery.Tables[0].Rows[0].ItemArray[0];
+
             var response = new QCAddEventResponse
             {
+                Event = new QCEvent { Id = eventId },
                 StatusCode = QCStatusCodes.SuccessfulStatusCode,
                 StatusMessage = QCStatusMessages.SuccessfulStatusMessage
             };
+
+            return response;
+        }
+
+        protected override async Task<QCGetEventResponse> GetEventCoreAsync(QCGetEventRequest qcGetEventRequest)
+        {
+            var query = $"SELECT edb.name, edb.description, edb.startdatetime, edb.enddatetime " +
+                $"FROM quackcalendar.events AS edb " +
+                $"WHERE edb.eventid = {qcGetEventRequest.EventId};";
+
+            var dataSetQuery = await ExecuteQueryAsync(query, 4);
+            var response = new QCGetEventResponse();
+
+            foreach (DataRow row in dataSetQuery.Tables[0].Rows)
+            {
+                response.Event.Description = (string)row.ItemArray[1];
+                response.Event.EndDateTime = (DateTime)row.ItemArray[3];
+                response.Event.Id = qcGetEventRequest.EventId;
+                response.Event.Name = (string)row.ItemArray[0];
+                response.Event.StartDateTime = (DateTime)row.ItemArray[2];
+            }
 
             return response;
         }
@@ -59,6 +90,29 @@ namespace QuackCalendar.Service.Manager.Gateway
 
             response.StatusCode = QCStatusCodes.SuccessfulStatusCode;
             response.StatusMessage = QCStatusMessages.SuccessfulStatusMessage;
+
+            return response;
+        }
+
+        protected override async Task<QCUpdateEventResponse> UpdateEventCoreAsync(QCUpdateEventRequest qcUpdateEventRequest)
+        {
+            var qce = qcUpdateEventRequest.Event;
+
+            var query = $"UPDATE quackcalendar.events SET " +
+                $"quackcalendar.events.startdatetime = '{qce.StartDateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
+                $"quackcalendar.events.enddatetime = '{qce.EndDateTime.ToString("yyyy-MM-dd HH:mm:ss")}', " +
+                $"quackcalendar.events.name = '{qce.Name}', " +
+                $"quackcalendar.events.description = '{qce.Description}' " +
+                $"WHERE quackcalendar.events.eventid = {qce.Id};";
+
+            await ExecuteCommandAsync(query, 1);
+
+            var response = new QCUpdateEventResponse
+            {
+                Event = qce,
+                StatusCode = QCStatusCodes.SuccessfulStatusCode,
+                StatusMessage = QCStatusMessages.SuccessfulStatusMessage
+            };
 
             return response;
         }

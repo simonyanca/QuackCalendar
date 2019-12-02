@@ -1,0 +1,37 @@
+﻿@page "{eventId:int?}"
+@model QuackCalendar.WebApp.Pages.QC.EditEventModel
+@{
+    ViewData["Title"] = "EditEvent";
+}
+
+<div class="breadcrumb">
+    <span class="breadcrumb-item">Quack Calendar</span>
+    <span class="breadcrumb-item">Edit Event</span>
+</div>
+
+<form method="post">
+    <input type="hidden" asp-for="SelectedEvent.Id" />
+    <div class="form-group">
+        <label asp-for="SelectedEvent.Name">Event name:</label>
+        <input asp-for="SelectedEvent.Name" class="form-control" />
+        <span class="text-warning" asp-validation-for="SelectedEvent.Name"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedEvent.Description">Description of event:</label>
+        <input asp-for="SelectedEvent.Description" class="form-control" />
+        <span class="text-warning" asp-validation-for="SelectedEvent.Description"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedEvent.StartDateTime">Start date/time of event:</label>
+        <input asp-for="SelectedEvent.StartDateTime" class="form-control" />
+        <span class="text-warning" asp-validation-for="SelectedEvent.StartDateTime"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedEvent.EndDateTime">End date/time of event:</label>
+        <input asp-for="SelectedEvent.EndDateTime" class="form-control" />
+        <span class="text-warning" asp-validation-for="SelectedEvent.EndDateTime"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a class="btn btn-secondary" asp-page="./ViewEvent" asp-route-eventId="@Model.SelectedEvent.Id">Cancel</a>
+</form>

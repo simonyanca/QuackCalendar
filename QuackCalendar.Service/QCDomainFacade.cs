@@ -27,5 +27,11 @@ namespace QuackCalendar.Service
 
         public async Task<QCGetEventsResponse> GetEventsAsync(QCGetEventsRequest qcGetEventsRequest)
             => await QCServiceManager.GetEventsAsync(qcGetEventsRequest);
+
+        public async Task<QCGetEventResponse> GetEventAsync(QCGetEventRequest qcGetEventRequest)
+            => await QCServiceManager.GetEventAsync(qcGetEventRequest);
+
+        public async Task<QCUpdateEventResponse> UpdateEventAsync(QCUpdateEventRequest qcUpdateEventRequest)
+            => await QCServiceManager.UpdateEventAsync(qcUpdateEventRequest);
     }
 }

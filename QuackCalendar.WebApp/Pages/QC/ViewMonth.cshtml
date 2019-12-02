@@ -30,19 +30,20 @@
                 @if (Model.DaysOfTheMonth[x, y] > 0)
                 {
                     <div class="nav navbar-light">
-                        @Model.DaysOfTheMonth[x, y]
+                        <span style="text-align: left; width: 50%">@Model.DaysOfTheMonth[x, y]</span>
+                        <span style="text-align: right; width: 50%"><a class="badge badge-light" asp-page="./EditEvent">+</a></span>
                     </div>
 
                     @if (Model.EventsPerDayOfTheMonth[Model.DaysOfTheMonth[x, y] - 1].Count > 0)
                     {
                         @foreach (var e in Model.EventsPerDayOfTheMonth[Model.DaysOfTheMonth[x, y] - 1])
                         {
-                            <a class="btn btn-outline-primary" asp-page="./ViewEvent" asp-route-eventId="@e.Id">@e.StartDateTime.ToString("HHtt") @e.Name.Substring(0, 8)...</a><br />
+                            <a class="btn btn-outline-primary" asp-page="./ViewEvent" asp-route-eventId="@e.Id">@e.StartDateTime.ToString("hhtt") @e.Name.Substring(0, (e.Name.Length >= 12) ? 12 : e.Name.Length)...</a><br />
                         }
                     }
                     else
                     {
-                        <br /><br /><br />
+                        <br /><br />
                     }
                 }
             </td>
