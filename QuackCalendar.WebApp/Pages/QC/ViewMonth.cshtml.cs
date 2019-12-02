@@ -11,6 +11,12 @@ namespace QuackCalendar.WebApp.Pages.QC
 {
     public class ViewMonthModel : PageModel
     {
+        [BindProperty(SupportsGet = true)]
+        public string enteredYear { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string enteredMonth { get; set; }
+
         public List<QCEvent>[] EventsPerDayOfTheMonth { get; set; } = new List<QCEvent>[31];
         public int[,] DaysOfTheMonth { get; set; } = new int[7, 6];
 
@@ -33,6 +39,8 @@ namespace QuackCalendar.WebApp.Pages.QC
         {
             SelectedYear = (selectedYear == null) ? DateTime.Now.Year : (int)selectedYear;
             SelectedMonth = (selectedMonth == null) ? DateTime.Now.Month : (int)selectedMonth;
+            enteredYear = SelectedYear.ToString();
+            enteredMonth = SelectedMonth.ToString();
 
             await PopulateQCEvents();
             PopulateEventsPerDayOfTheMonthFromQCEvents();

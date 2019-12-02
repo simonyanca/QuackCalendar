@@ -4,9 +4,18 @@
 }
 
 <div class="breadcrumb">
-    <span class="breadcrumb-item">Quack Calendar</span>
-    <span class="breadcrumb-item">View Month</span>
-    <span class="breadcrumb-item">@Model.SelectedMonthWord @Model.SelectedYear</span>
+    <span style="width: 50%">
+        <span class="breadcrumb-item">Quack Calendar</span>
+        <span class="breadcrumb-item">View Month</span>
+        <span class="breadcrumb-item">@Model.SelectedMonthWord @Model.SelectedYear</span>
+    </span>
+    <form class="form-group" style="width: 50%; text-align: right">
+        <label asp-for="enteredYear">Year:</label>
+        <input type="text" class="form-control w-25" style="display: inline" asp-for="enteredYear" />
+        <label asp-for="enteredMonth">Month:</label>
+        <input type="text" class="form-control w-25" style="display: inline" asp-for="enteredMonth" />
+        <a class="btn btn-secondary my-2 my-sm-0" asp-page="./ViewMonth">Go</a>
+    </form>
 </div>
 
 @if (Model.Message != null)
