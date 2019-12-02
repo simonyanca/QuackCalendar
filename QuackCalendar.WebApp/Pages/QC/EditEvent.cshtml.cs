@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -68,7 +66,6 @@ namespace QuackCalendar.WebApp.Pages.QC
                 SelectedEvent.Id = response.Event.Id;
             }
 
-            // does this actually send the event id???
             return RedirectToPage("./ViewEvent", new { eventId = SelectedEvent.Id });
         }
     }

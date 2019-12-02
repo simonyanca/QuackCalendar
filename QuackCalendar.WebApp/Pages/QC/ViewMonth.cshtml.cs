@@ -59,23 +59,6 @@ namespace QuackCalendar.WebApp.Pages.QC
 
                 var matchingEvents = qcEvents.Where(x => x.StartDateTime.Day <= day && x.EndDateTime.Day >= day);
                 EventsPerDayOfTheMonth[day - 1].AddRange(matchingEvents);
-
-                //foreach (var e in matchingEvents)
-                //{
-                //    string displayHour = "x";
-
-                //    if (e.StartDateTime.Hour == 0)
-                //    {
-                //        displayHour = "12";
-                //    }
-                //    else if (e.StartDateTime.Hour > 12)
-                //    {
-                //        displayHour = (e.StartDateTime.Hour - 12).ToString();
-                //    }
-
-                //    displayHour += (e.StartDateTime.Hour < 12) ? "am" : "pm";
-                //    EventsPerDayOfTheMonth[day - 1].Add($"{displayHour} {e.Name.Substring(0, 8)}...");
-                //}
             }
         }
 
